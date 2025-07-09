@@ -46,6 +46,19 @@ io.on("connection", (socket) => {
 
   // socket.emit("message", generateMessage("Welcome!"));
   // socket.broadcast.emit("message", "A new user has joined!");
+  socket.on('typing', () => {
+    const user = getUser(socket.id); // already defined in your code
+
+    if (user) {
+        socket.broadcast.to(user.room).emit('showTyping', `${user.username} is typing...`);
+
+        clearTimeout(socket.typingTimeout);
+        socket.typingTimeout = setTimeout(() => {
+            socket.broadcast.to(user.room).emit('hideTyping');
+        }, 5000);
+    }
+});
+
 
   socket.on("join", ({ username, room }, callback) => {
     // specifically emit event according to room name eg: no one can check whats going on in another room

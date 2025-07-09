@@ -2,17 +2,20 @@ const socket = io();
 
 // Elements
 const $messageForm = document.querySelector("#message-form");
+const $messageInput = document.querySelector('#message');
 const $messageFormInput = $messageForm.querySelector("input");
 const $messageFormButton = $messageForm.querySelector("button");
 const $sendLocationButton = document.querySelector("#send-location");
 const $messages = document.querySelector("#messages");
 
-// Templates
+// Typing Indicator Element
+const $typingIndicator = document.createElement('p');
+$typingIndicator.id = 'typing-indicator';
+document.querySelector('.chat__main').appendChild($typingIndicator);
 
+// Templates
 const messageTemplate = document.querySelector("#message-template").innerHTML;
-const locationTemplate = document.querySelector(
-  "#locmessage-template"
-).innerHTML;
+const locationTemplate = document.querySelector("#locmessage-template").innerHTML;
 const sidebarTemplate = document.querySelector("#sidebar-template").innerHTML;
 
 // Options
@@ -20,22 +23,14 @@ const { username, room } = Qs.parse(location.search, {
   ignoreQueryPrefix: true,
 });
 
+// Auto Scroll
 const autoScroll = () => {
-  // New message element
   const $newMessage = $messages.lastElementChild;
-
-  // hight of the new message
   const newMessageStyle = getComputedStyle($newMessage);
   const newMessageMargin = parseInt(newMessageStyle.marginBottom);
   const newMessageHeight = $newMessage.offsetHeight + newMessageMargin;
-
-  // visible height
   const visibleHeight = $messages.offsetHeight;
-
-  // height of messages container
   const containerHeight = $messages.scrollHeight;
-
-  // how far have I scrolled?
   const scrollOffset = $messages.scrollTop + visibleHeight;
 
   if (containerHeight - newMessageHeight <= scrollOffset) {
@@ -43,11 +38,8 @@ const autoScroll = () => {
   }
 };
 
-// server (emit) -> client (receive) - countUpdated
-// client (emit) -> server (receive) - increment
-
+// Incoming Messages
 socket.on("message", (message) => {
-  // console.log(message);
   const html = Mustache.render(messageTemplate, {
     username: message.username,
     message: message.text,
@@ -58,7 +50,6 @@ socket.on("message", (message) => {
 });
 
 socket.on("locationMessage", (url) => {
-  // console.log(url.username);
   const html = Mustache.render(locationTemplate, {
     username: url.username,
     url: url.url,
@@ -76,35 +67,29 @@ socket.on("roomData", ({ room, users }) => {
   document.querySelector("#sidebar").innerHTML = html;
 });
 
+// Send Message
 $messageForm.addEventListener("submit", (e) => {
   e.preventDefault();
-
-  // disable form after submit
   $messageFormButton.setAttribute("disabled", "disabled");
-
-  //disable
 
   const message = $messageFormInput.value;
 
   if (message === "") {
-    // enable form after submit
     $messageFormButton.removeAttribute("disabled");
     return;
   }
+
   socket.emit("sendMessage", message, (error) => {
-    // enable form after submit
     $messageFormButton.removeAttribute("disabled");
-    // clear input
     $messageFormInput.value = "";
-    // focus input
     $messageFormInput.focus();
     if (error) {
       return console.log(error);
     }
-    // console.log("Message Delivered");
   });
 });
 
+// Send Location
 document.querySelector("#send-location").addEventListener("click", (e) => {
   e.preventDefault();
   if (!navigator.geolocation) {
@@ -112,14 +97,12 @@ document.querySelector("#send-location").addEventListener("click", (e) => {
   }
 
   navigator.permissions.query({ name: "geolocation" }).then((res) => {
-    // console.log(res);
     if (res.state === "denied") {
       return alert("Please allow permission to send location!");
     }
   });
 
   navigator.geolocation.getCurrentPosition((position) => {
-    // console.log(position);
     $sendLocationButton.setAttribute("disabled", "disabled");
 
     socket.emit(
@@ -130,12 +113,17 @@ document.querySelector("#send-location").addEventListener("click", (e) => {
       },
       () => {
         $sendLocationButton.removeAttribute("disabled");
-        // console.log("Location Shared");
       }
     );
   });
 });
 
+// Emit Typing When Input Happens
+$messageInput.addEventListener('input', () => {
+  socket.emit('typing');
+});
+
+// Join Room
 socket.emit("join", { username, room }, (error) => {
   if (error) {
     alert(error);
@@ -143,7 +131,11 @@ socket.emit("join", { username, room }, (error) => {
   }
 });
 
-// document.querySelector("#increment").addEventListener("click", (e) => {
-//   console.log("clicked");
-//   socket.emit("increment");
-// });
+// Typing Indicator Listeners
+socket.on("showTyping", (msg) => {
+  $typingIndicator.innerText = msg;
+});
+
+socket.on("hideTyping", () => {
+  $typingIndicator.innerText = "";
+});
