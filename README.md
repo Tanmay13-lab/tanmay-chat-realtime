@@ -1,58 +1,54 @@
-# Realtime Chat App with Node.js and WebSockets
+# 💬 Real-Time Chat App – Tanmay Tiwari
 
-## Overview
+A real-time, multi-user chat application built using **Node.js**, **Express**, and **Socket.io**, enhanced with:
 
-This Realtime Chat App is a simple yet powerful application built with Node.js and WebSockets, allowing users to join different chat rooms and communicate with each other in real-time.
+- 😄 Emoji Picker using `emoji-picker-element`
+- 👀 Typing Indicator with timeout logic
+- 🌙 Dark Mode UI (CSS customized)
+- 🗺️ Location Sharing via Geolocation API
+- 🔄 Auto-scrolling, multi-room support
 
-## Features
+---
 
-- **Real-time Communication:** Utilizes WebSockets to enable instant messaging between users.
-- **Multiple Rooms:** Users can join different chat rooms.
-- **User-friendly Interface:** Provides an intuitive and clean user interface for an enjoyable chat experience.
+## 🚀 Features
 
-## Prerequisites
+- Join chat rooms with a custom username
+- Send and receive real-time messages instantly
+- Send live location with a single click
+- Click emojis to insert into your message
+- Typing indicator shows who is typing in real time
+- Responsive and dark-themed user interface
 
-Before running the application, make sure you have the following installed:
+---
 
-- Node.js: [Download and install Node.js](https://nodejs.org/)
+## 🛠️ Tech Stack
 
-## Getting Started
+- **Frontend**: HTML, CSS, JavaScript, Mustache.js, emoji-picker-element
+- **Backend**: Node.js, Express, Socket.io
+- **Utilities**: Moment.js (timestamps), Qs (query parsing)
 
-1. Clone the repository:
+---
 
-   ```bash
-   git clone https://github.com/your-username/realtime-chat-app.git
-   ```
-
-2. Navigate to the project directory:
+## 🧪 How to Run Locally
 
 ```bash
-cd realtime-nodejs-chat-app
-```
-3. Install dependencies:
-
-```bash
+git clone https://github.com/Tanmay13-lab/tanmay-chat-realtime.git
+cd tanmay-chat-realtime
 npm install
-```
-4. Start the server:
-```bash
-nodemon src/index.js or node src/index.js
-```
-5. Open your web browser and go to http://localhost:3000 to access the Realtime Chat App.
+npm start
 
-## Usage
-1. Enter a username.
-2. Choose a chat room to join.
-3. Start chatting with other users in real-time.
+## 🧑‍💻 About Me
 
-## File Structure
-- **src/index.js**: The main server file that handles WebSocket connections and serves the HTML page.
-- **public/index.html**: The HTML template for the chat application.
-- **public/style.css**: The stylesheet for styling the chat application.
+👋 I’m **Tanmay Tiwari**, a B.Tech IT student passionate about backend development and real-world problem solving.
 
-## Dependencies
-- `express`: Web framework for Node.js.
-- `socket.io`: WebSocket library for Node.js.
+> _“Built with ❤️ and caffeine.”_
 
-## Contributing
-Feel free to contribute to the development of this Realtime Chat App by creating issues or submitting pull requests. Your feedback and contributions are highly appreciated!
+📫 [vt30032@gmail.com](mailto:vt30032@gmail.com)  
+🌐 [https://github.com/Tanmay13-lab](https://github.com/Tanmay13-lab)
+
+---
+
+## 📌 Resume-Ready Project ✅
+
+This project was built and customized as part of my preparation for the **Google Summer 2026 Internship** application.
+
