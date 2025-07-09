@@ -36,6 +36,7 @@ git clone https://github.com/Tanmay13-lab/tanmay-chat-realtime.git
 cd tanmay-chat-realtime
 npm install
 npm start
+```
 
 ## 🧑‍💻 About Me
 
